@@ -23,7 +23,7 @@ interface TaskOption {
   prompts: string[];
 }
 
-const API_KEY = "AIzaSyAUtdOewFVMrp5iJ3hmpPQe_oS8vnB1Vio";
+const API_KEY = "AIzaSyCfiRvFoAXNHlhiQxtu3fOCpzMQlPptWgI";
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 const TASK_OPTIONS: TaskOption[] = [
