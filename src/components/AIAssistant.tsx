@@ -181,7 +181,7 @@ Instruction: Respond accordingly based on the task selected above.`;
             })}
           </div>
         ) : (
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto flex flex-col h-screen">
             <div className="mb-6 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center">
@@ -215,7 +215,7 @@ Instruction: Respond accordingly based on the task selected above.`;
               </Card>
             )}
 
-            <div className="space-y-4 mb-6 min-h-[300px]">
+            <div className="flex-1 overflow-y-auto space-y-4 mb-6 min-h-0">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -271,7 +271,7 @@ Instruction: Respond accordingly based on the task selected above.`;
               )}
             </div>
 
-            <Card className="p-4 bg-gradient-surface border-0">
+            <Card className="p-4 bg-gradient-surface border-0 sticky bottom-0">
               <div className="flex gap-3">
                 <Textarea
                   value={input}
