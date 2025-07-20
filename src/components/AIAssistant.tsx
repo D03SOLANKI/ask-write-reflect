@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, FileText, Sparkles, ThumbsUp, ThumbsDown, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 interface Message {
   id: string;
@@ -21,6 +22,9 @@ interface TaskOption {
   icon: React.ElementType;
   prompts: string[];
 }
+
+const API_KEY = "AIzaSyAUtdOewFVMrp5iJ3hmpPQe_oS8vnB1Vio";
+const genAI = new GoogleGenerativeAI(API_KEY);
 
 const TASK_OPTIONS: TaskOption[] = [
   {
@@ -84,31 +88,44 @@ export function AIAssistant() {
     setInput("");
     setIsLoading(true);
 
-    // Simulate AI response (in a real app, this would call an AI API)
-    setTimeout(() => {
+    try {
+      const response = await generateAIResponse(selectedTask, input);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: "assistant",
-        content: generateMockResponse(selectedTask, input),
+        content: response,
         timestamp: new Date()
       };
       
       setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error("Error generating AI response:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate response. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
-  const generateMockResponse = (taskId: string, userInput: string): string => {
-    switch (taskId) {
-      case "qa":
-        return "Based on your question, here's what I found: This is a comprehensive answer that addresses your query with factual information and relevant context.";
-      case "summarize":
-        return "Here's a concise summary of the content you provided: The main points include key themes, important details, and essential takeaways presented in a clear, organized manner.";
-      case "creative":
-        return "Here's a creative piece based on your request: Once upon a time, in a world where imagination meets reality, there lived extraordinary characters who embarked on adventures that would change their lives forever...";
-      default:
-        return "I'm here to help! Please select a task and try again.";
-    }
+  const generateAIResponse = async (taskId: string, userInput: string): Promise<string> => {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    
+    const taskTypes = {
+      qa: "Question Answering",
+      summarize: "Text Summarization", 
+      creative: "Creative Writing"
+    };
+    
+    const prompt = `Task: ${taskTypes[taskId as keyof typeof taskTypes]}
+User Input: ${userInput}
+Instruction: Respond accordingly based on the task selected above.`;
+    
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    return response.text();
   };
 
   const handleFeedback = (messageId: string, feedback: "positive" | "negative") => {
