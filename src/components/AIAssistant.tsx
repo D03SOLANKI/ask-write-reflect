@@ -111,7 +111,7 @@ export function AIAssistant() {
   };
 
   const generateAIResponse = async (taskId: string, userInput: string): Promise<string> => {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
     const taskTypes = {
       qa: "Question Answering",
