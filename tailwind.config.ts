@@ -26,7 +26,8 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					glow: 'hsl(var(--primary-glow))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -52,6 +53,14 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				ai: {
+					primary: 'hsl(var(--ai-primary))',
+					secondary: 'hsl(var(--ai-secondary))',
+					background: 'hsl(var(--ai-background))',
+					surface: 'hsl(var(--ai-surface))',
+					'user-bubble': 'hsl(var(--ai-user-bubble))',
+					'assistant-bubble': 'hsl(var(--ai-assistant-bubble))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -62,6 +71,16 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-background': 'var(--gradient-background)',
+				'gradient-surface': 'var(--gradient-surface)',
+			},
+			boxShadow: {
+				'ai': 'var(--shadow-ai)',
+				'glow': 'var(--shadow-glow)',
+				'surface': 'var(--shadow-surface)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
