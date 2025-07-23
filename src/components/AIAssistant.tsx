@@ -129,6 +129,27 @@ Instruction: Respond accordingly based on the task selected above.`;
   };
 
   const handleFeedback = (messageId: string, feedback: "positive" | "negative") => {
+    const message = messages.find(msg => msg.id === messageId);
+    
+    // Store feedback for analysis
+    const feedbackData = {
+      messageId,
+      feedback,
+      timestamp: new Date().toISOString(),
+      taskType: selectedTask,
+      messageContent: message?.content.substring(0, 100) + "...", // First 100 chars for context
+      userQuery: messages.find(msg => msg.type === "user" && 
+        parseInt(msg.id) === parseInt(messageId) - 1)?.content.substring(0, 100) + "..." || "Unknown"
+    };
+    
+    // Log feedback to console for analysis (in production, this would go to a logging service)
+    console.log("AI Assistant Feedback:", feedbackData);
+    
+    // Store in localStorage for persistent feedback collection
+    const existingFeedback = JSON.parse(localStorage.getItem("aiAssistantFeedback") || "[]");
+    existingFeedback.push(feedbackData);
+    localStorage.setItem("aiAssistantFeedback", JSON.stringify(existingFeedback));
+    
     setMessages(prev => 
       prev.map(msg => 
         msg.id === messageId ? { ...msg, feedback } : msg
