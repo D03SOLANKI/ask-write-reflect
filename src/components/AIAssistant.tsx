@@ -3,9 +3,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, FileText, Sparkles, ThumbsUp, ThumbsDown, Send } from "lucide-react";
+import { MessageSquare, FileText, Sparkles, ThumbsUp, ThumbsDown, Send, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { AIAssistantDocumentation } from "./AIAssistantDocumentation";
 
 interface Message {
   id: string;
@@ -67,7 +68,12 @@ export function AIAssistant() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showDocumentation, setShowDocumentation] = useState(false);
   const { toast } = useToast();
+
+  if (showDocumentation) {
+    return <AIAssistantDocumentation onBack={() => setShowDocumentation(false)} />;
+  }
 
   const handleTaskSelect = (taskId: string) => {
     setSelectedTask(taskId);
@@ -172,9 +178,20 @@ Instruction: Respond accordingly based on the task selected above.`;
     <div className="min-h-screen bg-gradient-background">
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
-            AI Assistant
-          </h1>
+          <div className="flex justify-between items-center mb-4">
+            <div></div>
+            <h1 className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              AI Assistant
+            </h1>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowDocumentation(true)}
+              className="flex items-center gap-2"
+            >
+              <BookOpen className="w-4 h-4" />
+              User Guide
+            </Button>
+          </div>
           <p className="text-muted-foreground text-lg">
             Choose a task and let me help you with questions, summaries, or creative content
           </p>
